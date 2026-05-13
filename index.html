@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Jay Square Candies | Alewa mafi kyau</title>
+
+<!-- PWA & Install Support -->
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#2C1305"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="application-name" content="Jay Square Candies"/>
+
+<!-- iOS / iPhone Support -->
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="Jay Square"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<link rel="apple-touch-icon" href="logo.jpg"/>
+
+<!-- SEO -->
+<meta name="description" content="Jay Square Candies — Premium handpicked sweets delivered with love. Order via WhatsApp. Alewa mafi kyau."/>
+<meta name="keywords" content="Jay Square Candies, alewa, sweets, gummy bears, candy Nigeria"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400&family=Cormorant+Garamond:wght@300;400;600&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --gold:#C9943A;--gold-light:#E8BE6A;--gold-dark:#9A6F20;
+    --brown:#2C1305;--brown-mid:#4A2210;--brown-light:#7A3A18;
+    --cream:#FFF8F0;--cream-dark:#F5E8D0;
+    --white:#FFFFFF;--text-dark:#1A0A00;
+  }
+  html{scroll-behavior:smooth;overflow-x:hidden}
+  body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text-dark);overflow-x:hidden;max-width:100vw}
+  ::-webkit-scrollbar{width:7px}
+  ::-webkit-scrollbar-track{background:var(--brown)}
+  ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:4px}
+
+  /* ── NAVBAR ── */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:1000;
+    background:rgba(44,19,5,0.97);backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(201,148,58,.3);
+    padding:0 5%;display:flex;align-items:center;justify-content:space-between;
+    height:70px;animation:slideDown .6s ease forwards;
+  }
+  @keyframes slideDown{from{transform:translateY(-100%);opacity:0}to{transform:translateY(0);opacity:1}}
+
+  .nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+
+  /* ── LOGO CIRCLE ── gold ring, prominent ── */
+  .logo-circle{
+    width:52px;height:52px;border-radius:50%;
+    border:2.5px solid var(--gold);
+    background:var(--brown-mid);
+    overflow:hidden;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 0 0 4px rgba(201,148,58,.18);
+  }
+  .logo-circle img{width:100%;height:100%;object-fit:cover;display:block}
+  .logo-fallback{
+    font-family:'Playfair Display',serif;font-size:13px;font-weight:800;
+    color:var(--gold);text-align:center;line-height:1.2;padding:4px;
+  }
+  .nav-brand-name{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--gold);line-height:1.1}
+  .nav-brand-sub{font-size:.6rem;color:var(--gold-light);font-weight:300;letter-spacing:3px;text-transform:uppercase}
+
+  .nav-links{display:flex;align-items:center;gap:1.8rem;list-style:none}
+  .nav-links a{color:var(--cream-dark);text-decoration:none;font-size:.82rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;position:relative;padding-bottom:4px;transition:color .3s}
+  .nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--gold);transition:width .3s}
+  .nav-links a:hover{color:var(--gold)}
+  .nav-links a:hover::after{width:100%}
+  .nav-order{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--brown)!important;padding:8px 20px!important;border-radius:25px;font-weight:700!important;transition:transform .2s,box-shadow .2s!important}
+  .nav-order::after{display:none!important}
+  .nav-order:hover{transform:translateY(-2px)!important;box-shadow:0 6px 20px rgba(201,148,58,.45)!important}
+
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+  .hamburger span{width:24px;height:2px;background:var(--gold);border-radius:2px}
+  .mobile-menu{position:fixed;top:70px;left:0;right:0;z-index:999;background:rgba(44,19,5,.98);backdrop-filter:blur(12px);padding:1.5rem 5%;display:none;flex-direction:column;gap:1rem;border-bottom:1px solid rgba(201,148,58,.2)}
+  .mobile-menu.open{display:flex}
+  .mobile-menu a{color:var(--cream-dark);text-decoration:none;font-size:1rem;font-weight:600;padding:.8rem 0;border-bottom:1px solid rgba(201,148,58,.1)}
+
+  /* ── HERO ── */
+  #hero{position:relative;width:100%;height:100vh;min-height:600px;overflow:hidden;margin-top:70px}
+  .slides-container{position:relative;width:100%;height:100%}
+
+  .slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 1.3s ease;background-size:cover;background-position:center}
+  .slide.active{opacity:1}
+
+  /* Gradient fallback — replaced by real photos automatically when files exist */
+  .slide-1{background:url('slide1.jpg') center/cover no-repeat,linear-gradient(160deg,#4A2210,#2C1305)}
+  .slide-2{background:url('slide2.jpg') center/cover no-repeat,linear-gradient(160deg,#2C1305,#5a1e0c)}
+  .slide-3{background:url('slide3.jpg') center/cover no-repeat,linear-gradient(160deg,#4A1208,#2C1305)}
+
+  /* Dark overlay so text is always legible */
+  .slide-overlay{position:absolute;inset:0;z-index:1;
+    background:linear-gradient(160deg,rgba(20,6,0,.7) 30%,rgba(44,19,5,.45) 100%)}
+
+  /* Decorative colour blobs (visible even without a photo) */
+  .blob{position:absolute;border-radius:50%;pointer-events:none;z-index:0}
+  .b1{width:380px;height:380px;background:radial-gradient(circle,rgba(255,107,157,.3),transparent 70%);top:-60px;right:5%;animation:floatB 7s ease-in-out infinite}
+  .b2{width:280px;height:280px;background:radial-gradient(circle,rgba(78,205,196,.22),transparent 70%);bottom:40px;left:6%;animation:floatB 9s ease-in-out infinite 2s}
+  .b3{width:320px;height:320px;background:radial-gradient(circle,rgba(255,140,66,.28),transparent 70%);top:30%;left:2%;animation:floatB 8s ease-in-out infinite 1s}
+  .b4{width:350px;height:350px;background:radial-gradient(circle,rgba(155,89,182,.25),transparent 70%);bottom:5%;right:8%;animation:floatB 6s ease-in-out infinite 3s}
+  .b5{width:300px;height:300px;background:radial-gradient(circle,rgba(201,148,58,.2),transparent 70%);top:20%;right:15%;animation:floatB 10s ease-in-out infinite .5s}
+  @keyframes floatB{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-22px) scale(1.05)}}
+
+  .slide-content{position:relative;z-index:2;text-align:center;padding:0 20px;max-width:820px}
+  .slide-tag{display:inline-block;background:linear-gradient(90deg,var(--gold),var(--gold-light));color:var(--brown);font-size:.68rem;font-weight:800;letter-spacing:4px;text-transform:uppercase;padding:6px 22px;border-radius:20px;margin-bottom:1.2rem;animation:fadeUp .8s ease .2s both}
+  .slide-title{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,7vw,5.5rem);font-weight:800;color:var(--cream);line-height:1.05;margin-bottom:.5rem;animation:fadeUp .8s ease .4s both;text-shadow:0 4px 28px rgba(0,0,0,.45)}
+  .slide-title span{color:var(--gold-light);font-style:italic}
+  .slide-hausa{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,3vw,1.7rem);color:rgba(255,248,240,.82);font-weight:300;letter-spacing:2px;margin-bottom:2rem;animation:fadeUp .8s ease .6s both}
+  .slide-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s ease .8s both}
+  .btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--brown);padding:14px 36px;border-radius:50px;font-weight:800;font-size:.95rem;text-decoration:none;letter-spacing:1px;box-shadow:0 8px 30px rgba(201,148,58,.45);transition:transform .25s,box-shadow .25s;display:inline-block}
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(201,148,58,.6)}
+  .btn-outline{border:2px solid rgba(255,248,240,.65);color:var(--cream);padding:14px 36px;border-radius:50px;font-weight:700;font-size:.95rem;text-decoration:none;letter-spacing:1px;transition:all .25s;display:inline-block;backdrop-filter:blur(6px)}
+  .btn-outline:hover{background:rgba(255,248,240,.12);border-color:var(--gold-light)}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+  .slide-counter{position:absolute;top:24px;right:24px;z-index:10;background:rgba(44,19,5,.55);border:1px solid rgba(201,148,58,.35);color:var(--gold-light);font-size:.75rem;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:20px;backdrop-filter:blur(8px)}
+  .slide-dots{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:10}
+  .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,248,240,.4);cursor:pointer;transition:all .3s;border:1px solid rgba(255,255,255,.3)}
+  .dot.active{background:var(--gold);width:28px;border-radius:4px}
+  .slide-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:10;background:rgba(44,19,5,.5);border:1px solid rgba(201,148,58,.4);color:var(--gold);width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.2rem;transition:all .3s;backdrop-filter:blur(6px)}
+  .slide-arrow:hover{background:rgba(201,148,58,.3);transform:translateY(-50%) scale(1.1)}
+  .slide-arrow.prev{left:24px}
+  .slide-arrow.next{right:24px}
+
+  /* ── TICKER ── */
+  .ticker-wrap{background:linear-gradient(90deg,var(--brown),var(--brown-mid),var(--brown));padding:14px 0;overflow:hidden;border-top:1px solid rgba(201,148,58,.25);border-bottom:1px solid rgba(201,148,58,.25)}
+  .ticker{display:flex;white-space:nowrap;animation:ticker 28s linear infinite}
+  .ticker-item{display:inline-flex;align-items:center;gap:.5rem;font-size:.78rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--cream-dark);padding:0 36px}
+  .ticker-item span{color:var(--gold);font-size:1.1rem}
+  @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* ── SHARED SECTION ── */
+  section{padding:90px 5%}
+  .section-label{display:inline-block;font-size:.63rem;font-weight:800;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem}
+  .section-label::before{content:'— ';color:var(--gold-dark)}
+  .section-label::after{content:' —';color:var(--gold-dark)}
+  .section-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:800;color:var(--brown);line-height:1.1;margin-bottom:.4rem}
+  .section-title em{color:var(--gold-dark);font-style:italic}
+  .section-subtitle{font-size:.95rem;color:#6B4423;font-weight:400;max-width:500px;line-height:1.7;margin-top:.5rem}
+
+  /* ── ABOUT ── */
+  #about{background:var(--cream);display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;overflow:hidden}
+  .about-visual{position:relative;border-radius:24px;overflow:hidden;height:500px;background:linear-gradient(135deg,var(--brown-light),var(--brown-mid))}
+  .about-visual img{width:100%;height:100%;object-fit:cover;display:block}
+  .about-badge{position:absolute;bottom:20px;right:20px;width:118px;height:118px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Playfair Display',serif;color:var(--brown);text-align:center;box-shadow:0 8px 32px rgba(201,148,58,.5);animation:rotateBadge 20s linear infinite;border:3px solid var(--cream)}
+  .badge-num{font-size:1.8rem;font-weight:800;line-height:1}
+  .badge-txt{font-size:.56rem;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+  @keyframes rotateBadge{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+  .about-text{padding-right:2rem}
+  .about-text p{color:#5A3015;line-height:1.85;font-size:.95rem;margin-bottom:1rem}
+  .about-hausa{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--gold-dark);font-weight:600;font-style:italic;margin-bottom:1.5rem;padding-left:1rem;border-left:3px solid var(--gold)}
+  .about-stats{display:flex;gap:2rem;margin-top:2rem}
+  .stat{text-align:center}
+  .stat-num{font-family:'Playfair Display',serif;font-size:2.3rem;font-weight:800;color:var(--gold-dark);line-height:1;display:block}
+  .stat-label{font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7A5030}
+
+  /* ── PRODUCTS ── */
+  #products{background:linear-gradient(180deg,var(--cream-dark),var(--cream));text-align:center}
+  .products-header{margin-bottom:3rem}
+  .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.8rem}
+  .product-card{background:var(--white);border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(74,34,16,.1);transition:transform .35s,box-shadow .35s;border:1px solid rgba(201,148,58,.15);cursor:pointer}
+  .product-card:hover{transform:translateY(-10px) scale(1.015);box-shadow:0 20px 50px rgba(74,34,16,.2)}
+  .product-img{height:200px;position:relative;overflow:hidden}
+  .pc-1 .product-img{background:linear-gradient(135deg,#8B1A35,#4A1215)}
+  .pc-2 .product-img{background:linear-gradient(135deg,#1A5E34,#0D2918)}
+  .pc-3 .product-img{background:linear-gradient(135deg,#1A2D6B,#0D1A3E)}
+  .pc-4 .product-img{background:linear-gradient(135deg,#6B3A0A,#3C1C04)}
+  .pc-5 .product-img{background:linear-gradient(135deg,#5E1A5E,#300D30)}
+  .pc-6 .product-img{background:linear-gradient(135deg,#1A4A5E,#0D2535)}
+  .product-info{padding:1.2rem 1.4rem 1.5rem}
+  .product-name{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--brown);margin-bottom:.5rem}
+  .product-desc{font-size:.82rem;color:#7A5030;line-height:1.6;margin-bottom:1rem}
+  .product-footer{display:flex;align-items:center;justify-content:space-between}
+  .product-tag{background:var(--cream-dark);color:var(--brown-light);font-size:.63rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:20px}
+  .product-order-btn{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--brown);font-size:.75rem;font-weight:800;padding:8px 18px;border-radius:20px;text-decoration:none;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;letter-spacing:.5px}
+  .product-order-btn:hover{transform:scale(1.05);box-shadow:0 4px 16px rgba(201,148,58,.4)}
+
+  /* ── GALLERY ── */
+  #gallery{background:var(--brown);text-align:center}
+  #gallery .section-title{color:var(--cream)}
+  #gallery .section-subtitle{color:rgba(255,248,240,.5)}
+  #gallery .section-label{color:var(--gold-light)}
+  .gallery-grid{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:220px 220px;gap:12px;margin-top:3rem}
+  .gallery-item{border-radius:14px;overflow:hidden;position:relative;cursor:pointer;border:1px solid rgba(201,148,58,.15);transition:transform .35s,filter .35s}
+  .gallery-item:hover{transform:scale(1.02);filter:brightness(1.1)}
+  .gallery-item img{width:100%;height:100%;object-fit:cover;display:block}
+  .gallery-item.col2{grid-column:span 2}
+  .gallery-item.row2{grid-row:span 2}
+  .g1{background:linear-gradient(135deg,#7A1A2E,#3A0E18)}
+  .g2{background:linear-gradient(135deg,#1A4A2E,#0D2918)}
+  .g3{background:linear-gradient(135deg,#4A2A0A,#2C1305)}
+  .g4{background:linear-gradient(135deg,#4A1A4A,#2C0D2C)}
+  .gallery-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(44,19,5,.75) 100%);opacity:0;transition:opacity .3s;display:flex;align-items:flex-end;padding:14px}
+  .gallery-item:hover .gallery-overlay{opacity:1}
+  .gallery-overlay span{color:var(--gold-light);font-size:.78rem;font-weight:700;letter-spacing:1px}
+
+  /* ── WHY US ── */
+  #why{background:var(--cream);display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;overflow:hidden}
+  .why-cards{display:flex;flex-direction:column;gap:1.2rem}
+  .why-card{background:var(--white);border-radius:16px;padding:1.4rem 1.8rem;border:1px solid rgba(201,148,58,.2);display:flex;align-items:flex-start;gap:1.2rem;box-shadow:0 4px 20px rgba(74,34,16,.07);transition:transform .3s,box-shadow .3s}
+  .why-card:hover{transform:translateX(8px);box-shadow:0 8px 30px rgba(74,34,16,.15)}
+  .why-icon{width:48px;height:48px;border-radius:14px;flex-shrink:0;background:linear-gradient(135deg,var(--gold),var(--gold-dark));display:flex;align-items:center;justify-content:center;font-size:1.35rem}
+  .why-card-title{font-family:'Playfair Display',serif;font-size:1.02rem;font-weight:700;color:var(--brown);margin-bottom:.25rem}
+  .why-card-hausa{font-size:.72rem;color:var(--gold-dark);font-weight:600;margin-bottom:.4rem}
+  .why-card-desc{font-size:.82rem;color:#7A5030;line-height:1.6}
+  .why-visual{position:relative;border-radius:24px;overflow:hidden;height:460px;background:linear-gradient(135deg,var(--brown-light),var(--brown-mid))}
+  .why-visual img{width:100%;height:100%;object-fit:cover;display:block}
+  .why-float-card{position:absolute;bottom:20px;left:20px;background:var(--white);border-radius:18px;padding:1.2rem 1.5rem;box-shadow:0 12px 40px rgba(74,34,16,.2);border:1px solid rgba(201,148,58,.2);min-width:178px;animation:floatCard 4s ease-in-out infinite}
+  @keyframes floatCard{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .wfc-num{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:800;color:var(--gold-dark);line-height:1}
+  .wfc-label{font-size:.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--brown-light);margin-top:.2rem}
+
+  /* ── TESTIMONIALS ── */
+  #testimonials{background:linear-gradient(160deg,var(--brown),var(--brown-mid));text-align:center;overflow:hidden}
+  #testimonials .section-title{color:var(--cream)}
+  #testimonials .section-subtitle{color:rgba(255,248,240,.5);margin:0 auto}
+  .testi-track-wrap{overflow:hidden;margin-top:3rem}
+  .testi-track{display:flex;gap:1.5rem;animation:testiScroll 35s linear infinite;width:max-content}
+  .testi-track:hover{animation-play-state:paused}
+  @keyframes testiScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .testi-card{background:rgba(255,248,240,.07);border:1px solid rgba(201,148,58,.2);border-radius:20px;padding:2rem;min-width:300px;max-width:300px;text-align:left}
+  .testi-stars{color:var(--gold);font-size:1rem;margin-bottom:.8rem}
+  .testi-text{font-size:.88rem;color:rgba(255,248,240,.8);line-height:1.75;font-style:italic;margin-bottom:1rem}
+  .testi-author{display:flex;align-items:center;gap:.8rem}
+  .testi-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:800;font-size:.9rem;color:var(--brown)}
+  .testi-name{font-weight:700;font-size:.82rem;color:var(--cream)}
+  .testi-loc{font-size:.7rem;color:var(--gold-light)}
+
+  /* ── CONTACT ── */
+  #contact{background:var(--cream);display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;overflow:hidden}
+  .contact-detail{display:flex;align-items:center;gap:1rem;background:var(--white);border-radius:14px;padding:1rem 1.4rem;border:1px solid rgba(201,148,58,.2);margin-bottom:1rem;box-shadow:0 2px 12px rgba(74,34,16,.06);transition:transform .3s}
+  .contact-detail:hover{transform:translateX(6px)}
+  .cd-icon{width:44px;height:44px;border-radius:12px;flex-shrink:0;background:linear-gradient(135deg,var(--gold),var(--gold-dark));display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+  .cd-label{font-size:.66rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dark)}
+  .cd-value{font-size:.92rem;font-weight:600;color:var(--brown)}
+  .contact-form-box{background:var(--white);border-radius:24px;padding:2.5rem;box-shadow:0 8px 40px rgba(74,34,16,.12);border:1px solid rgba(201,148,58,.15)}
+  .form-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--brown);margin-bottom:1.8rem}
+  .form-group{margin-bottom:1.2rem}
+  .form-label{display:block;font-size:.73rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--brown-light);margin-bottom:.5rem}
+  .form-input{width:100%;padding:13px 16px;border:1.5px solid rgba(201,148,58,.25);border-radius:10px;background:var(--cream);font-family:'Nunito',sans-serif;font-size:.9rem;color:var(--brown);outline:none;transition:border-color .3s,box-shadow .3s}
+  .form-input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(201,148,58,.12)}
+  .form-input::placeholder{color:#B8956A}
+  textarea.form-input{resize:vertical;min-height:110px}
+  .form-submit{width:100%;padding:15px;border-radius:50px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--brown);font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;letter-spacing:1px;border:none;cursor:pointer;box-shadow:0 6px 24px rgba(201,148,58,.4);transition:transform .25s,box-shadow .25s}
+  .form-submit:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(201,148,58,.55)}
+
+  /* ── WHATSAPP FLOAT ── */
+  .wa-float{position:fixed;bottom:30px;right:30px;z-index:9999;background:#25D366;color:#fff;width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 6px 30px rgba(37,211,102,.5);animation:waPulse 2.5s ease-in-out infinite;transition:transform .2s}
+  .wa-float:hover{transform:scale(1.12)}
+  @keyframes waPulse{0%,100%{box-shadow:0 6px 30px rgba(37,211,102,.5)}50%{box-shadow:0 6px 50px rgba(37,211,102,.8),0 0 0 14px rgba(37,211,102,.12)}}
+  .wa-tooltip{position:absolute;right:72px;top:50%;transform:translateY(-50%);background:var(--brown);color:var(--cream);padding:7px 14px;border-radius:8px;font-size:.76rem;font-weight:700;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .3s}
+  .wa-tooltip::after{content:'';position:absolute;right:-6px;top:50%;transform:translateY(-50%);width:0;height:0;border-style:solid;border-width:5px 0 5px 6px;border-color:transparent transparent transparent var(--brown)}
+  .wa-float:hover .wa-tooltip{opacity:1}
+
+  /* ── FOOTER ── */
+  footer{background:var(--brown);padding:60px 5% 24px;border-top:1px solid rgba(201,148,58,.2)}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:4rem;margin-bottom:3rem}
+  .footer-logo-text{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:800;color:var(--gold);display:block;margin-bottom:.3rem}
+  .footer-logo-sub{font-size:.63rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold-light);display:block;margin-bottom:1rem}
+  .footer-brand p{font-size:.84rem;color:rgba(255,248,240,.5);line-height:1.8;max-width:300px}
+  .footer-title{font-family:'Playfair Display',serif;font-size:.98rem;font-weight:700;color:var(--gold-light);margin-bottom:1.2rem}
+  .footer-links{list-style:none}
+  .footer-links li{margin-bottom:.7rem}
+  .footer-links a{color:rgba(255,248,240,.5);text-decoration:none;font-size:.84rem;transition:color .3s}
+  .footer-links a:hover{color:var(--gold-light)}
+  .footer-bottom{border-top:1px solid rgba(201,148,58,.1);padding-top:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+  .footer-bottom p{font-size:.76rem;color:rgba(255,248,240,.35)}
+  .footer-bottom span{color:var(--gold-dark)}
+  .social-links{display:flex;gap:.8rem}
+  .social-link{width:36px;height:36px;border-radius:50%;border:1px solid rgba(201,148,58,.3);display:flex;align-items:center;justify-content:center;color:rgba(255,248,240,.5);text-decoration:none;font-size:.85rem;transition:all .3s}
+  .social-link:hover{background:var(--gold);color:var(--brown);border-color:var(--gold)}
+
+  /* ── SCROLL REVEAL ── */
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease}
+  .reveal.visible{opacity:1;transform:translateY(0)}
+  .reveal-left{opacity:0;transform:translateX(-50px);transition:opacity .8s ease,transform .8s ease}
+  .reveal-left.visible{opacity:1;transform:translateX(0)}
+  .reveal-right{opacity:0;transform:translateX(50px);transition:opacity .8s ease,transform .8s ease}
+  .reveal-right.visible{opacity:1;transform:translateX(0)}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:900px){
+    #about,#why,#contact{grid-template-columns:1fr;gap:3rem}
+    .about-visual,.why-visual{height:300px}
+    .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+    .gallery-item.col2,.gallery-item.row2{grid-column:span 1;grid-row:span 1}
+    .footer-grid{grid-template-columns:1fr 1fr;gap:2.5rem}
+    .about-text{padding-right:0}
+    .why-float-card{display:none}
+  }
+  @media(max-width:640px){
+    nav{padding:0 1.2rem}
+    .nav-links{display:none}
+    .hamburger{display:flex}
+    section{padding:60px 5%}
+    .gallery-grid{grid-template-columns:1fr;height:auto}
+    .footer-grid{grid-template-columns:1fr}
+    .footer-bottom{flex-direction:column;text-align:center}
+    #hero{height:100svh}
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════
+  NAVBAR
+  Logo file: logo.jpg  (same folder as this HTML)
+════════════════════════════════ -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="logo-circle">
+      <img src="logo.jpg" alt="Jay Square Logo"
+           onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex'"/>
+      <div class="logo-fallback" id="logoFallback" style="display:none">J&amp;S</div>
+    </div>
+    <div>
+      <div class="nav-brand-name">Jay Square</div>
+      <div class="nav-brand-sub">Candies · Alewa</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#products">Products</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="https://wa.me/2349020926024" class="nav-order" target="_blank">Order Now · Yi Oda</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeMobile()">About · Game da Mu</a>
+  <a href="#products" onclick="closeMobile()">Products · Kaya</a>
+  <a href="#gallery" onclick="closeMobile()">Gallery · Hotuna</a>
+  <a href="#contact" onclick="closeMobile()">Contact · Tuntuɓe Mu</a>
+  <a href="https://wa.me/2349020926024" target="_blank">Order Now · Yi Oda ➜</a>
+</div>
+
+<!-- ════════════════════════════════
+  HERO SLIDESHOW
+  Add 3 photos named:
+    slide1.jpg
+    slide2.jpg
+    slide3.jpg
+════════════════════════════════ -->
+<section id="hero">
+  <div class="slides-container">
+
+    <div class="slide slide-1 active">
+      <div class="blob b1"></div><div class="blob b2"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <span class="slide-tag">✦ Welcome · Maraba ✦</span>
+        <h1 class="slide-title">Sweet <span>Bliss</span> in<br/>Every Bite</h1>
+        <p class="slide-hausa">Daci da zaƙi a kowane taɓo</p>
+        <div class="slide-btns">
+          <a href="#products" class="btn-primary">Shop Now · Saya Yanzu</a>
+          <a href="#about" class="btn-outline">Our Story · Tarihinmu</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide slide-2">
+      <div class="blob b3"></div><div class="blob b4"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <span class="slide-tag">✦ Premium Candies · Alewa Mafi Kyau ✦</span>
+        <h1 class="slide-title">Crafted with<br/><span>Pure Love</span></h1>
+        <p class="slide-hausa">An ƙirƙira ta da ƙauna ta musamman</p>
+        <div class="slide-btns">
+          <a href="https://wa.me/2349020926024" class="btn-primary" target="_blank">Order via WhatsApp</a>
+          <a href="#gallery" class="btn-outline">View Gallery · Duba Hotuna</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide slide-3">
+      <div class="blob b5"></div><div class="blob b1"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <span class="slide-tag">✦ Fresh Daily · Sabo Kowace Rana ✦</span>
+        <h1 class="slide-title">Made <span>Fresh</span>,<br/>Delivered Sweet</h1>
+        <p class="slide-hausa">Sabo ne kuma mai dadi — isar da ƙauna</p>
+        <div class="slide-btns">
+          <a href="#contact" class="btn-primary">Get in Touch · Tuntuɓe Mu</a>
+          <a href="#products" class="btn-outline">Explore · Duba</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="slide-arrow prev" id="prevArrow">&#8592;</div>
+  <div class="slide-arrow next" id="nextArrow">&#8594;</div>
+  <div class="slide-counter" id="slideCounter">1 / 3</div>
+  <div class="slide-dots">
+    <div class="dot active" data-idx="0"></div>
+    <div class="dot" data-idx="1"></div>
+    <div class="dot" data-idx="2"></div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <div class="ticker-item"><span>🍬</span> Jay Square Candies</div>
+    <div class="ticker-item"><span>✦</span> Alewa Mafi Kyau</div>
+    <div class="ticker-item"><span>🍭</span> Fresh Daily · Sabo Kowace Rana</div>
+    <div class="ticker-item"><span>✦</span> Premium Quality · Inganci</div>
+    <div class="ticker-item"><span>🍡</span> Delivered Sweet</div>
+    <div class="ticker-item"><span>✦</span> Made with Love · An yi da Ƙauna</div>
+    <div class="ticker-item"><span>🎀</span> Gift Packs Available · Kyauta</div>
+    <div class="ticker-item"><span>✦</span> WhatsApp: 09020926024</div>
+    <div class="ticker-item"><span>🍬</span> Jay Square Candies</div>
+    <div class="ticker-item"><span>✦</span> Alewa Mafi Kyau</div>
+    <div class="ticker-item"><span>🍭</span> Fresh Daily · Sabo Kowace Rana</div>
+    <div class="ticker-item"><span>✦</span> Premium Quality · Inganci</div>
+    <div class="ticker-item"><span>🍡</span> Delivered Sweet</div>
+    <div class="ticker-item"><span>✦</span> Made with Love · An yi da Ƙauna</div>
+    <div class="ticker-item"><span>🎀</span> Gift Packs Available · Kyauta</div>
+    <div class="ticker-item"><span>✦</span> WhatsApp: 09020926024</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+  ABOUT
+  Photo file: about.jpg
+════════════════════════════════ -->
+<section id="about">
+  <div class="about-visual reveal-left">
+    <img src="about.jpg" alt="Jay Square Candies"
+         onerror="this.style.display='none'"/>
+    <div class="about-badge">
+      <span class="badge-num">100%</span>
+      <span class="badge-txt">Natural · Halitta</span>
+    </div>
+  </div>
+  <div class="about-text reveal-right">
+    <span class="section-label">Our Story · Tarihinmu</span>
+    <h2 class="section-title">We Craft <em>Joy</em><br/>Into Every Candy</h2>
+    <p class="about-hausa">"Mu na ƙirƙira farin ciki a cikin kowane alewa"</p>
+    <p>Jay Square Candies was born from a deep passion for bringing happiness through the art of confectionery. Every piece is handpicked, carefully packaged, and delivered with love straight to your door.</p>
+    <p>From classic gummy bears to premium sour belts — a celebration of flavour, colour, and joy. Perfect for gifting, parties, or simply treating yourself.</p>
+    <p style="color:var(--gold-dark);font-style:italic;font-family:'Cormorant Garamond',serif;font-size:.97rem">Jay Square Candies ya fito ne daga sha'awar kawo farin ciki ga kowa. Muna yin kyakkyawan kaya kuma muna isar da su da ƙauna.</p>
+    <div class="about-stats">
+      <div class="stat"><span class="stat-num">50+</span><span class="stat-label">Candy Types</span></div>
+      <div class="stat"><span class="stat-num">500+</span><span class="stat-label">Happy Customers</span></div>
+      <div class="stat"><span class="stat-num">5★</span><span class="stat-label">Rating</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+  PRODUCTS  (colour backgrounds — no photos needed)
+════════════════════════════════ -->
+<section id="products">
+  <div class="products-header reveal">
+    <span class="section-label">Our Products · Kayayyakinmu</span>
+    <h2 class="section-title">Explore Our <em>Sweet</em> Collection</h2>
+    <p class="section-subtitle">Duba tarin alewa namu mai daɗi da launi</p>
+  </div>
+  <div class="products-grid">
+
+    <div class="product-card pc-1 reveal">
+      <div class="product-img"></div>
+      <div class="product-info">
+        <div class="product-name">Gummy Bears Mix</div>
+        <div class="product-desc">Soft, fruity gummy bears in 8 amazing flavours — perfect for everyone.</div>
+        <div class="product-footer">
+          <span class="product-tag">Best Seller</span>
+          <a href="https://wa.me/2349020926024?text=Hi! I want to order Gummy Bears" class="product-order-btn" target="_blank">Order · Saya</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card pc-2 reveal" style="transition-delay:.1s">
+      <div class="product-img"></div>
+      <div class="product-info">
+        <div class="product-name">Sour Belts</div>
+        <div class="product-desc">Tangy sour belts that pack a punch — the adventurous candy lover's favourite.</div>
+        <div class="product-footer">
+          <span class="product-tag">Fan Favourite</span>
+          <a href="https://wa.me/2349020926024?text=Hi! I want to order Sour Belts" class="product-order-btn" target="_blank">Order · Saya</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card pc-3 reveal" style="transition-delay:.2s">
+      <div class="product-img"></div>
+      <div class="product-info">
+        <div class="product-name">Rainbow Lollipops</div>
+        <div class="product-desc">Swirling rainbow lollipops bringing colour and sweetness to every occasion.</div>
+        <div class="product-footer">
+          <span class="product-tag">Kids' Pick</span>
+          <a href="https://wa.me/2349020926024?text=Hi! I want to order Lollipops" class="product-order-btn" target="_blank">Order · Saya</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card pc-4 reveal" style="transition-delay:.3s">
+      <div class="product-img"></div>
+      <div class="product-info">
+        <div class="product-name">Chocolate Drops</div>
+        <div class="product-desc">Rich, creamy chocolate drops that melt in your mouth — a true indulgence.</div>
+        <div class="product-footer">
+          <span class="product-tag">Premium</span>
+          <a href="https://wa.me/2349020926024?text=Hi! I want to order Chocolate Drops" class="product-order-btn" target="_blank">Order · Saya</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card pc-5 reveal" style="transition-delay:.4s">
+      <div class="product-img"></div>
+      <div class="product-info">
+        <div class="product-name">Jelly Hearts</div>
+        <div class="product-desc">Heart-shaped jellies bursting with mixed berry flavours — perfect for gifting.</div>
+        <div class="product-footer">
+          <span class="product-tag">Gift Pick</span>
+          <a href="https://wa.me/2349020926024?text=Hi! I want to order Jelly Hearts" class="product-order-btn" target="_blank">Order · Saya</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card pc-6 reveal" style="transition-delay:.5s">
+      <div class="product-img"></div>
+      <div class="product-info">
+        <div class="product-name">Candy Gift Boxes</div>
+        <div class="product-desc">Curated gift boxes packed with our best-sellers — ideal for every celebration.</div>
+        <div class="product-footer">
+          <span class="product-tag">Special</span>
+          <a href="https://wa.me/2349020926024?text=Hi! I want to order a Gift Box" class="product-order-btn" target="_blank">Order · Saya</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+  GALLERY
+  Photo files:
+    gallery1.jpg  (wide, top-left)
+    gallery2.jpg  (tall, right column)
+    gallery3.jpg  (bottom-left)
+    gallery4.jpg  (bottom-middle)
+════════════════════════════════ -->
+<section id="gallery">
+  <div class="reveal">
+    <span class="section-label">Gallery · Hotuna</span>
+    <h2 class="section-title">A Feast for the <em>Eyes</em></h2>
+    <p class="section-subtitle">Hotuna na alewa da shirye-shirye daban-daban</p>
+  </div>
+  <div class="gallery-grid reveal">
+
+    <div class="gallery-item col2 g1">
+      <img src="gallery1.jpg" alt="Candy Collection" onerror="this.style.display='none'"/>
+      <div class="gallery-overlay"><span>Candy Collection</span></div>
+    </div>
+
+    <div class="gallery-item row2 g2">
+      <img src="gallery2.jpg" alt="Sweet Treats" onerror="this.style.display='none'"/>
+      <div class="gallery-overlay"><span>Sweet Treats</span></div>
+    </div>
+
+    <div class="gallery-item g3">
+      <img src="gallery3.jpg" alt="Gummy Bears" onerror="this.style.display='none'"/>
+      <div class="gallery-overlay"><span>Gummy Bears</span></div>
+    </div>
+
+    <div class="gallery-item g4">
+      <img src="gallery4.jpg" alt="Gift Packs" onerror="this.style.display='none'"/>
+      <div class="gallery-overlay"><span>Gift Packs</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- WHY US — feature.jpg -->
+<section id="why">
+  <div class="why-cards reveal-left">
+    <span class="section-label">Why Choose Us · Me ya sa mu</span>
+    <h2 class="section-title" style="margin-bottom:1.8rem">The Jay Square <em>Difference</em></h2>
+    <div class="why-card">
+      <div class="why-icon">🌿</div>
+      <div><div class="why-card-title">100% Natural Ingredients</div><div class="why-card-hausa">Kayan halitta gaba ɗaya</div><div class="why-card-desc">Only natural flavours and colours — no artificial additives.</div></div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🎁</div>
+      <div><div class="why-card-title">Beautiful Gift Packaging</div><div class="why-card-hausa">Kyakkyawar akwatin kyauta</div><div class="why-card-desc">Every order is lovingly packaged, making our candies the perfect gift.</div></div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🚀</div>
+      <div><div class="why-card-title">Fast Delivery</div><div class="why-card-hausa">Isar da sauri</div><div class="why-card-desc">Order on WhatsApp and enjoy fast, reliable delivery right to your door.</div></div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">⭐</div>
+      <div><div class="why-card-title">5-Star Quality</div><div class="why-card-hausa">Inganci na tauraro biyar</div><div class="why-card-desc">Hundreds of happy customers trust Jay Square for consistently premium candies.</div></div>
+    </div>
+  </div>
+  <div class="why-visual reveal-right">
+    <img src="feature.jpg" alt="Jay Square Feature" onerror="this.style.display='none'"/>
+    <div class="why-float-card">
+      <div class="wfc-num">500+</div>
+      <div class="wfc-label">Happy Customers<br/>Abokai Masu Farin Ciki</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="reveal">
+    <span class="section-label">Reviews · Ra'ayoyi</span>
+    <h2 class="section-title">What Our Customers <em>Say</em></h2>
+    <p class="section-subtitle">Abin da abokanmu ke faɗa game da alewa namu</p>
+  </div>
+  <div class="testi-track-wrap">
+    <div class="testi-track">
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"The gummy bears are absolutely incredible! My kids go crazy for them every time."</div><div class="testi-author"><div class="testi-avatar">A</div><div><div class="testi-name">Aisha M.</div><div class="testi-loc">Kano, Nigeria</div></div></div></div>
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"Ordered a gift box for my daughter's birthday — she was over the moon! Will definitely order again."</div><div class="testi-author"><div class="testi-avatar">F</div><div><div class="testi-name">Fatima I.</div><div class="testi-loc">Abuja, Nigeria</div></div></div></div>
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"Jay Square Candies ne mafi kyau! Alewa na fresh ne kuma delivery yana da sauri. Na yaba sosai!"</div><div class="testi-author"><div class="testi-avatar">H</div><div><div class="testi-name">Hamza Y.</div><div class="testi-loc">Kaduna, Nigeria</div></div></div></div>
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"The sour belts are dangerously addictive. Always arrive super fresh and the taste is unbeatable."</div><div class="testi-author"><div class="testi-avatar">C</div><div><div class="testi-name">Chioma O.</div><div class="testi-loc">Lagos, Nigeria</div></div></div></div>
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"Na syi kyauta ta alewa don abokata kuma ta yi farin ciki sosai. Mun gode Jay Square!"</div><div class="testi-author"><div class="testi-avatar">Z</div><div><div class="testi-name">Zainab B.</div><div class="testi-loc">Sokoto, Nigeria</div></div></div></div>
+      <!-- duplicate -->
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"The gummy bears are absolutely incredible! My kids go crazy for them every time."</div><div class="testi-author"><div class="testi-avatar">A</div><div><div class="testi-name">Aisha M.</div><div class="testi-loc">Kano, Nigeria</div></div></div></div>
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"Ordered a gift box for my daughter's birthday — she was over the moon! Will definitely order again."</div><div class="testi-author"><div class="testi-avatar">F</div><div><div class="testi-name">Fatima I.</div><div class="testi-loc">Abuja, Nigeria</div></div></div></div>
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"Jay Square Candies ne mafi kyau! Alewa na fresh ne kuma delivery yana da sauri. Na yaba sosai!"</div><div class="testi-author"><div class="testi-avatar">H</div><div><div class="testi-name">Hamza Y.</div><div class="testi-loc">Kaduna, Nigeria</div></div></div></div>
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"The sour belts are dangerously addictive. Always arrive super fresh and the taste is unbeatable."</div><div class="testi-author"><div class="testi-avatar">C</div><div><div class="testi-name">Chioma O.</div><div class="testi-loc">Lagos, Nigeria</div></div></div></div>
+      <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"Na syi kyauta ta alewa don abokata kuma ta yi farin ciki sosai. Mun gode Jay Square!"</div><div class="testi-author"><div class="testi-avatar">Z</div><div><div class="testi-name">Zainab B.</div><div class="testi-loc">Sokoto, Nigeria</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-info reveal-left">
+    <span class="section-label">Contact Us · Tuntuɓe Mu</span>
+    <h2 class="section-title">Let's Talk <em>Sweetness</em></h2>
+    <p class="section-subtitle" style="margin-bottom:2rem">Tuntuɓe mu ta hanyar WhatsApp ko Instagram.</p>
+    <div class="contact-detail"><div class="cd-icon">📱</div><div><div class="cd-label">WhatsApp · Kai Tsaye</div><div class="cd-value">09020926024</div></div></div>
+    <div class="contact-detail"><div class="cd-icon">📸</div><div><div class="cd-label">Instagram</div><div class="cd-value">@Jay_Square_Candies</div></div></div>
+    <div class="contact-detail"><div class="cd-icon">🕐</div><div><div class="cd-label">Hours · Lokaci</div><div class="cd-value">Mon–Sat: 8am – 8pm</div></div></div>
+    <a href="https://wa.me/2349020926024?text=Hello! I'd like to order from Jay Square Candies." class="btn-primary" target="_blank" style="display:inline-flex;align-items:center;gap:.6rem;margin-top:1.5rem;text-decoration:none;">💬 Chat on WhatsApp</a>
+  </div>
+  <div class="contact-form-box reveal-right">
+    <div class="form-title">Send a Message · Aika Saƙo</div>
+    <div class="form-group"><label class="form-label">Your Name · Sunanka</label><input type="text" class="form-input" placeholder="e.g. Aisha Muhammad"/></div>
+    <div class="form-group"><label class="form-label">Phone · Waya</label><input type="tel" class="form-input" placeholder="e.g. 08012345678"/></div>
+    <div class="form-group"><label class="form-label">Product · Kaya</label>
+      <select class="form-input">
+        <option value="">Select · Zaɓa</option>
+        <option>Gummy Bears Mix</option><option>Sour Belts</option><option>Rainbow Lollipops</option>
+        <option>Chocolate Drops</option><option>Jelly Hearts</option><option>Candy Gift Box</option>
+        <option>Custom Order · Oda na musamman</option>
+      </select>
+    </div>
+    <div class="form-group"><label class="form-label">Message · Saƙo</label><textarea class="form-input" placeholder="Tell us your order details... · Faɗa mana bukatarka..."></textarea></div>
+    <button class="form-submit" onclick="sendViaWhatsApp()">Send via WhatsApp 💬 · Aika</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="footer-logo-text">Jay Square Candies</span>
+      <span class="footer-logo-sub">Alewa mafi kyau · Premium Sweets</span>
+      <p>Bringing sweetness and joy to every home, one candy at a time. Order fresh, delivered with love.</p>
+      <p style="margin-top:.6rem;font-style:italic">Kawo daɗi da farin ciki ga kowace gida, alewa ɗaya bayan ɗaya.</p>
+    </div>
+    <div>
+      <div class="footer-title">Quick Links · Hanyoyi</div>
+      <ul class="footer-links">
+        <li><a href="#about">About Us</a></li><li><a href="#products">Products</a></li>
+        <li><a href="#gallery">Gallery</a></li><li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-title">Connect · Haɗa Mu</div>
+      <ul class="footer-links">
+        <li><a href="https://wa.me/2349020926024" target="_blank">📱 09020926024</a></li>
+        <li><a href="https://instagram.com/Jay_Square_Candies" target="_blank">📸 @Jay_Square_Candies</a></li>
+      </ul>
+      <div class="social-links" style="margin-top:1.2rem">
+        <a href="https://wa.me/2349020926024" class="social-link" target="_blank">💬</a>
+        <a href="https://instagram.com/Jay_Square_Candies" class="social-link" target="_blank">📸</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 <span>Jay Square Candies</span>. All rights reserved · Haƙƙoƙi na ajiye</p>
+    <p>Made with <span>♥</span> · An yi da ƙauna</p>
+  </div>
+</footer>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/2349020926024?text=Hello! I'd like to order from Jay Square Candies." class="wa-float" target="_blank">
+  <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.116 1.524 5.843L.057 23.857l6.178-1.438A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.893 0-3.657-.502-5.176-1.375l-.373-.22-3.857.896.93-3.752-.243-.388A9.945 9.945 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+  <span class="wa-tooltip">Order on WhatsApp · Yi Oda</span>
+</a>
+
+<script>
+// ── SLIDESHOW ──
+let current=0;
+const slides=document.querySelectorAll('.slide');
+const dots=document.querySelectorAll('.dot');
+const counter=document.getElementById('slideCounter');
+let timer;
+
+function goTo(i){
+  slides[current].classList.remove('active');
+  dots[current].classList.remove('active');
+  current=(i+slides.length)%slides.length;
+  slides[current].classList.add('active');
+  dots[current].classList.add('active');
+  counter.textContent=(current+1)+' / '+slides.length;
+}
+function next(){goTo(current+1)}
+function prev(){goTo(current-1)}
+function start(){timer=setInterval(next,5000)}
+function reset(){clearInterval(timer);start()}
+
+document.getElementById('nextArrow').addEventListener('click',()=>{next();reset()});
+document.getElementById('prevArrow').addEventListener('click',()=>{prev();reset()});
+dots.forEach(d=>d.addEventListener('click',()=>{goTo(+d.dataset.idx);reset()}));
+start();
+
+// ── MOBILE MENU ──
+document.getElementById('hamburger').addEventListener('click',()=>
+  document.getElementById('mobileMenu').classList.toggle('open'));
+function closeMobile(){document.getElementById('mobileMenu').classList.remove('open')}
+
+// ── SCROLL REVEAL ──
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
+},{threshold:0.12});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>obs.observe(el));
+
+// ── WHATSAPP FORM ──
+function sendViaWhatsApp(){
+  const f=document.querySelectorAll('#contact .form-input');
+  const name=f[0].value.trim()||'A customer';
+  const phone=f[1].value.trim()||'Not provided';
+  const product=f[2].value||'Not specified';
+  const msg=f[3].value.trim()||'I would like to place an order.';
+  const text=encodeURIComponent(`Hello Jay Square Candies! 🍬\n\nName: ${name}\nPhone: ${phone}\nProduct: ${product}\nMessage: ${msg}\n\nThank you!`);
+  window.open(`https://wa.me/2349020926024?text=${text}`,'_blank');
+}
+</script>
+</body>
+</html>

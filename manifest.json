@@ -1,0 +1,35 @@
+{
+  "name": "Jay Square Candies",
+  "short_name": "Jay Square",
+  "description": "Premium handpicked sweets delivered with love. Alewa mafi kyau.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#2C1305",
+  "theme_color": "#2C1305",
+  "orientation": "portrait-primary",
+  "lang": "en",
+  "categories": ["food", "shopping"],
+  "icons": [
+    {
+      "src": "logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Order on WhatsApp",
+      "short_name": "Order",
+      "description": "Place an order via WhatsApp",
+      "url": "https://wa.me/2349020926024?text=Hello! I'd like to order from Jay Square Candies.",
+      "icons": [{ "src": "logo.jpg", "sizes": "96x96" }]
+    }
+  ]
+}
