@@ -2,7 +2,7 @@
   "name": "Jay Square Candies",
   "short_name": "Jay Square",
   "description": "Premium handpicked sweets delivered with love. Alewa mafi kyau.",
-  "start_url": "/index.html",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#2C1305",
   "theme_color": "#2C1305",
